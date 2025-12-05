@@ -18,6 +18,8 @@ interface createNoteProps {
   tag: string;
 }
 
+type Tags = string[];
+
 const myToken = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
 axios.defaults.headers.common['Authorization'] = `Bearer ${myToken}`;
@@ -55,4 +57,17 @@ export const createNote = async (data: createNoteProps) => {
 export const deleteNote = async (id: Note['id']): Promise<Note> => {
   const response = await axios.delete<Note>(`/notes/${id}`);
   return response.data;
+};
+
+interface fetchNotesByTagProps {
+  tag?: string;
+}
+
+export const fetchNotesByTag = async ({
+  tag,
+}: fetchNotesByTagProps): Promise<fetchNotesResponse> => {
+  const response = await axios
+    .get('/notes', { params: { tag } })
+    .then(response => response.data);
+  return response;
 };
