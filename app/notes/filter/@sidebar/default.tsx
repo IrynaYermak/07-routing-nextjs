@@ -9,7 +9,7 @@ export default async function SidebarNotes() {
     <div className={css.sidebaer}>
       <ul className={css.menuList}>
         <li className={css.menuItem}>
-          <Link href={`/notes`} className={css.menuLink}>
+          <Link href={`/notes/filter/all`} className={css.menuLink}>
             All notes
           </Link>
         </li>

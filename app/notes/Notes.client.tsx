@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { toast, Toaster } from 'react-hot-toast';
 import css from './NotesPage.module.css';
+import Link from 'next/link';
 
 export default function NotesClient() {
   const [page, setPage] = useState(1);
@@ -62,6 +63,9 @@ export default function NotesClient() {
           <button className={css.button} onClick={openModal}>
             Create note +
           </button>
+          <Link className={css.button} href={'notes/filter/all'}>
+            Filter by tag
+          </Link>
         </div>
         {/* {isLoading || (isFetching && <Loader />)} */}
         {isError && <Error />}
