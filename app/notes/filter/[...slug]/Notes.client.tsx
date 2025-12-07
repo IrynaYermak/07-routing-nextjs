@@ -14,7 +14,6 @@ import { toast, Toaster } from 'react-hot-toast';
 import css from './NotesPage.module.css';
 import { useParams } from 'next/navigation';
 // import Link from 'next/link';
-// import { useParams } from 'next/navigation';
 
 // interface NotesClientProps {
 //   tag?: string;
