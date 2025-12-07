@@ -12,12 +12,21 @@ import { useState, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { toast, Toaster } from 'react-hot-toast';
 import css from './NotesPage.module.css';
-import Link from 'next/link';
+import { useParams } from 'next/navigation';
+// import Link from 'next/link';
+// import { useParams } from 'next/navigation';
+
+// interface NotesClientProps {
+//   tag?: string;
+// }
 
 export default function NotesClient() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const { isModalOpen, openModal, closeModal } = useModalControl();
+  const params = useParams<{ tag: string }>();
+  const tag = params.tag === 'all' ? undefined : params.tag;
+
   const {
     data: response,
     isSuccess,
@@ -25,9 +34,9 @@ export default function NotesClient() {
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: ['notes', search, page],
-    queryFn: () => fetchNotes({ search, page }),
-    enabled: page !== 0,
+    queryKey: ['notes', search, page, tag],
+    queryFn: () => fetchNotes({ search, page, tag }),
+    // enabled: page !== 0,
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });
@@ -63,11 +72,8 @@ export default function NotesClient() {
           <button className={css.button} onClick={openModal}>
             Create note +
           </button>
-          <Link className={css.button} href={'notes/filter/all'}>
-            Filter by tag
-          </Link>
         </div>
-        {/* {isLoading || (isFetching && <Loader />)} */}
+        {isLoading || (isFetching && <p>Loading...</p>)}
         {isError && <Error />}
         {isSuccess && <NoteList notes={response.notes} />}
         {isModalOpen && (

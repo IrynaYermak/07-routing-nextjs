@@ -2,8 +2,9 @@ import axios from 'axios';
 import type { Note } from '@/types/note';
 
 interface fetchNotesProps {
-  search: string;
+  search?: string;
   page: number;
+  tag?: string;
 }
 
 export interface fetchNotesResponse {
@@ -27,12 +28,14 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${myToken}`;
 export const fetchNotes = async ({
   search,
   page,
+  tag,
 }: fetchNotesProps): Promise<fetchNotesResponse> => {
   const options = {
     params: {
       page,
       perPage: 12,
       search,
+      tag,
     },
   };
 
@@ -57,17 +60,4 @@ export const createNote = async (data: createNoteProps) => {
 export const deleteNote = async (id: Note['id']): Promise<Note> => {
   const response = await axios.delete<Note>(`/notes/${id}`);
   return response.data;
-};
-
-interface fetchNotesByTagProps {
-  tag?: string;
-}
-
-export const fetchNotesByTag = async ({
-  tag,
-}: fetchNotesByTagProps): Promise<fetchNotesResponse> => {
-  const response = await axios
-    .get('/notes', { params: { tag } })
-    .then(response => response.data);
-  return response;
 };

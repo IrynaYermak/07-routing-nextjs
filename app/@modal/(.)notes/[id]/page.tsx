@@ -1,19 +1,27 @@
 import { fetchNoteById } from '@/lib/api';
-import RouteInterceptorModal from '@/components/Modal/RouteInterceptorModal';
-import NotePreview from '@/components/NotePreview/NotePreview';
+import {
+  QueryClient,
+  HydrationBoundary,
+  dehydrate,
+} from '@tanstack/react-query';
+import NotePreview from './NotePreview.client';
 
 interface PreviewProps {
   params: Promise<{ id: string }>;
 }
 
 export default async function NoteShowPreview({ params }: PreviewProps) {
+  const queryClient = new QueryClient();
   const { id } = await params;
-  const note = await fetchNoteById(id);
+
+  await queryClient.prefetchQuery({
+    queryKey: ['note', id],
+    queryFn: () => fetchNoteById(id),
+  });
+
   return (
-    <>
-      <RouteInterceptorModal>
-        <NotePreview note={note} />
-      </RouteInterceptorModal>
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <NotePreview />
+    </HydrationBoundary>
   );
 }
