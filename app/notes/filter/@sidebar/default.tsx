@@ -6,7 +6,7 @@ export default async function SidebarNotes() {
   const tags = ['Work', 'Personal', 'Meeting', 'Shopping', 'Todo'];
 
   return (
-    <div className={css.sidebaer}>
+    <div className={css.sidebar}>
       <ul className={css.menuList}>
         <li className={css.menuItem}>
           <Link href={`/notes/filter/all`} className={css.menuLink}>

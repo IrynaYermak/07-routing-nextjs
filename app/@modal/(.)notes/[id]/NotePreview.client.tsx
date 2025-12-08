@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { fetchNoteById } from '@/lib/api';
 import Modal from '@/components/Modal/Modal';
+import type { Note } from '@/types/note';
 
 export default function NotePreview() {
   const router = useRouter();
@@ -14,18 +15,14 @@ export default function NotePreview() {
     data: note,
     isLoading,
     isError,
-  } = useQuery({
+  } = useQuery<Note>({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
     enabled: Boolean(id),
     refetchOnMount: false,
   });
 
-  if (!note) {
-    return <p>There is no notes...</p>;
-  }
-
-  const noteData = note.updatedAt
+  const noteData = note?.updatedAt
     ? `Updated at: ${note?.updatedAt}`
     : `Created at: ${note?.createdAt}`;
 
@@ -35,6 +32,11 @@ export default function NotePreview() {
   if (isError) {
     return <p>Something went wrong.</p>;
   }
+
+  if (!note) {
+    return <p>There is no notes...</p>;
+  }
+
   return (
     <Modal onClose={close}>
       <div className={css.container}>

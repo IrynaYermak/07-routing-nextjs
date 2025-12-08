@@ -12,19 +12,16 @@ import { useState, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { toast, Toaster } from 'react-hot-toast';
 import css from './NotesPage.module.css';
-import { useParams } from 'next/navigation';
 // import Link from 'next/link';
 
-// interface NotesClientProps {
-//   tag?: string;
-// }
+interface NotesClientProps {
+  tag?: string;
+}
 
-export default function NotesClient() {
+export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const { isModalOpen, openModal, closeModal } = useModalControl();
-  const params = useParams<{ tag: string }>();
-  const tag = params.tag === 'all' ? undefined : params.tag;
 
   const {
     data: response,
